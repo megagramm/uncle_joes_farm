@@ -151,25 +151,27 @@ class Duck(Mammal):
 
 animals = {
     'grey':
-        {'entity': Goose,
+        {'entity': 'Goose',
             'name': 'Серый',
             'weight': 8},
     'white':
-        {'entity': Goose,
+        {'entity': 'Goose',
             'name': 'Белый',
             'weight': 7.5}
 }
-entitys = dict{}
-entitys[animals.]
+
+entitys = dict()
+# entitys[animals.]
 
 animals['grey']
 
 # for key, value in animals.items():
 #     key = value['entity'](value['name'], value['weight'])
 
-grey.say()
+
 # grey = Goose('Серый', 8)
 # white = Goose('Белый', 7.5)
+# grey.say()
 
 mary = Cow('Манька', 523)
 
