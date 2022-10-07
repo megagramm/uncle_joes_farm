@@ -48,7 +48,7 @@ class Animal:
 
     def get_sex(self):
         if self.__sex is None:
-            return "Оно требует называть себя ОНИ"
+            return "Пол не определен. Оно требует называть себя ОНИ"
         return self.__sex
 
     def set_sex(self, sex):
@@ -157,35 +157,44 @@ animals = {
     'white':
         {'entity': 'Goose',
             'name': 'Белый',
-            'weight': 7.5}
+            'weight': 7.5},
+    'mary':
+        {'entity':'Cow',
+        'name':'Манька',
+        'weight':523},
+    'barashek':
+        {'entity':'Sheep',
+         'name':'Барашек',
+         'weight':45},
+'kudrjavij':
+        {'entity':'Sheep',
+         'name':'Кудрявый',
+         'weight':42},
+'koko':
+        {'entity':'Chicken',
+         'name':'Ко-Ко',
+         'weight':2.1},
+'kukareku':
+        {'entity':'Chicken',
+         'name':'Кукареку',
+         'weight':1.7},
+'horns':
+        {'entity':'Goat',
+         'name':'Рога',
+         'weight':60},
+'hooves':
+        {'entity':'Goat',
+         'name':'Копыта',
+         'weight':63},
+'kryakva':
+        {'entity':'Duck',
+         'name':'Кряква',
+         'weight':2.4}
 }
 
-entitys = dict()
-# entitys[animals.]
-
-animals['grey']
-
-# for key, value in animals.items():
-#     key = value['entity'](value['name'], value['weight'])
-
-
-# grey = Goose('Серый', 8)
-# white = Goose('Белый', 7.5)
-# grey.say()
-
-mary = Cow('Манька', 523)
-
-barashek = Sheep('Барашек', 45)
-kudrjavij = Sheep('Кудрявый', 42)
-
-koko = Chicken('Ко-Ко', 2.1)
-kukareku = Chicken('Кукареку', 1.7)
-
-horns = Goat('Рога', 60)
-hooves = Goat('Копыта', 63)
-
-kryakva = Duck('Кряква', 2.4)
-
+for key, value in animals.items():
+    print(f'{key} = {value["entity"]}("{value["name"]}", {value["weight"]})')
+    exec("{} = {}('{}',{})".format(key, value["entity"], value["name"], value["weight"]))
 
 print(horns.name, horns.get_sex())
 horns.input_set_sex()
