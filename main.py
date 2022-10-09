@@ -1,31 +1,9 @@
 import datetime
+import random
 
-# Со всеми животными вам необходимо как-то взаимодействовать:
-# feed all of them кормить
-# milking cow and goats корову и коз доить
-# shearing овец стричь
-# collect eggs собирать яйца у кур, утки и гусей
-# различать по голосам(коровы мычат, утки крякают и т.д.)
-
-# name
-# weight
-
-
-# Задание 1:
-# Нужно реализовать классы животных и определить методы взаимодействия с животными.
-# ​Для каждого животного из списка должен существовать экземпляр класса.
-# Каждое животное требуется накормить и подоить/постричь/собрать яйца, если надо.​
-#
-# Задание 2:
-# У каждого животного должно быть определено имя(self.name) и вес(self.weight).
-#
-# Необходимо посчитать общий вес всех животных(экземпляров класса);
-# Вывести название самого тяжелого животного.
-
-# class Animal
-# class Bird (Animal)
-# class Mammal (Animal)
-
+def rprint(string):
+    """Формирует вывод текста на экран по правому краю"""
+    print(f'\n{"="*20} {string:>80}\n')
 
 class Animal:
     """Основной класс наших живых существ"""
@@ -48,13 +26,15 @@ class Animal:
 
     def get_sex(self):
         if self.__sex is None:
-            return "Пол не определен. Оно требует называть себя ОНИ"
+            # print(f"{self.name}: "
+            #       f"Пол не определен. Оно требует называть себя ОНИ")
+            return
         return self.__sex
 
     def set_sex(self, sex):
         self.__sex = sex
 
-    def input_set_sex(self):
+    def input_set_sex(self, intity=None):
         sex = input('Укажите пол (m, male, f, female): ').lower()
         if sex not in ['m', 'male', 'f', 'female']:
             print('Ваши значения не подходят:')
@@ -63,7 +43,18 @@ class Animal:
             sex = 'male'
         if sex == 'f':
             sex = 'female'
-        self.set_sex(sex)
+        if intity == None:
+            self.set_sex(sex)
+        else:
+            intity.set_sex(sex)
+
+    def get_species_of_animals(self):
+        if self.get_sex() == 'male':
+            return self.species_of_animals[0]
+        elif self.get_sex() == 'female':
+            return self.species_of_animals[1]
+        else:
+            return
 
     def get_birthday(self):
         if self.__birthday is None:
@@ -85,12 +76,19 @@ class Animal:
         if self.sound is None:
             print('Это существо не умеет издавать звуки')
         else:
-            print(self.sound)
+            print(f'{self.name} ({self.get_species_of_animals()}): {self.sound}')
 
     def pet_tha_animal(self):
         """Погладь животное"""
         self.say()
+        print(f'Вы гладите животное. Все любят ласку. {self.name} радуется')
 
+    def feed_the_animal(self, food_weight=0):
+        if food_weight == 0:
+            food_weight = round(self.weight*0.045,2)
+        self.weight += round(food_weight*0.2, 2)
+        print(f'{self.name} ест. Вес еды: {food_weight} кг. '
+              f'Вес увеличился на {round(food_weight*0.2, 2)} кг и составил {self.weight} кг')
 
 class Bird(Animal):
     """Подкласс живых существ"""
@@ -105,6 +103,24 @@ class Bird(Animal):
         self.name = name
         self.weight = weight
 
+    def collect_eggs(self):
+        """Собирать яйца"""
+        if self.get_sex() != 'female':
+            print(f'{self.name}: Можно собирать яйца только у самочки')
+            return
+        eggs = random.randint(0, 3)
+        if eggs > 0:
+            self.say()
+            self.say()
+            self.say()
+            print(f'{self.name}({self.species_of_animals[1].lower()}) снесла {eggs} яйца. Вы их забрали, она очень недовольна')
+        else:
+            print(f'{self.name}({self.species_of_animals[1]}): Не удалось собрать ни одного яйца. '
+                  f'Либо {self.species_of_animals[1].lower()} перестала нестись, либо она их прячет')
+
+    def shearing(self):
+        """Стричь"""
+        print('Нельзя стричь птиц')
 
 class Mammal(Animal):
     """Подкласс живых существ"""
@@ -119,35 +135,56 @@ class Mammal(Animal):
         self.name = name
         self.weight = weight
 
+    def collect_eggs(self):
+        """Собирать яйца"""
+        if self.get_sex() in ['male', 'female']:
+            species_of_animals = self.species_of_animals[0] if self.get_sex() == 'male' else self.species_of_animals[1]
+            print(f'{self.name}({species_of_animals.lower()}) Нельзя собирать яйца у млекопитающих')
+        else:
+            print(f'{self.name} Нельзя собирать яйца у млекопитающих')
+
+    def shearing(self):
+        """Стричь"""
+        """Определить, стригут ли этих животных. Подстричь, уменьшить вес."""
+        ...
+
 
 class Goose(Bird):
     sound = 'Га-га-га'
-    __species_of_animals = ['Гусь', 'Гусыня']
+    species_of_animals = ['Гусь', 'Гусыня']
 
 
 class Cow(Mammal):
     sound = 'Муу-у'
-    __species_of_animals = ['Бык', 'Корова']
+    species_of_animals = ['Бык', 'Корова']
+
+    def milking(self):
+        """Доить"""
+        if self.get_sex()=='female':
+            print(f'{self.name} ({self.get_species_of_animals()}): {self.get_species_of_animals()} подоена')
+            return
+        print(f'{self.name} нельзя подоить')
 
 
 class Sheep(Mammal):
     sound = 'Бе-е-е'
-    __species_of_animals = ['Баран', 'Овца']
+    species_of_animals = ['Баран', 'Овца']
 
 
 class Chicken(Bird):
     sound = 'Ку-ка-ре-ку'
-    __species_of_animals = ['Петух', 'Курица']
+    species_of_animals = ['Петух', 'Курица']
 
 
 class Goat(Mammal):
     sound = 'Ме-е-е'
-    __species_of_animals = ['Козёл', 'Коза']
+    species_of_animals = ['Козёл', 'Коза']
 
 
-class Duck(Mammal):
+class Duck(Bird):
     sound = 'Кря-кря'
-    __species_of_animals = ['Селезень', 'Утка']
+    species_of_animals = ['Селезень', 'Утка']
+
 
 animals = {
     'grey':
@@ -187,7 +224,7 @@ animals = {
          'name':'Копыта',
          'weight':63},
 'kryakva':
-        {'entity':'Duck',
+        {'entity': 'Duck',
          'name':'Кряква',
          'weight':2.4}
 }
@@ -196,8 +233,71 @@ for key, value in animals.items():
     print(f'{key} = {value["entity"]}("{value["name"]}", {value["weight"]})')
     exec("{} = {}('{}',{})".format(key, value["entity"], value["name"], value["weight"]))
 
-print(horns.name, horns.get_sex())
-horns.input_set_sex()
-print(horns.name, horns.get_sex())
+# print("""
+# Ферма запонена животными
+#
+# вы можете делать разные действия с животными.
+# Введите команду:
+#  say/говорить
+#  feed/кормить
+#  pet/гладить
+#  collect/собрать яйца
+#  shearing/стричь
+#  milking/доить
+#
+# """)
+rprint("Животное подаёт голос")
+for i in range(4):
+    animal = random.choice(list(animals.keys()))
+    sex = random.choice(['male', 'female'])
+    exec("{}.set_sex('{}')".format(animal, sex))
+    exec("{}.say()".format(animal))
 
-horns.pet_tha_animal()
+rprint("Кормим животное")
+for i in range(4):
+    exec("{}.feed_the_animal()".format(random.choice(list(animals.keys()))))
+
+rprint("Гладим животное")
+for i in range(4):
+    exec("{}.pet_tha_animal()".format(random.choice(list(animals.keys()))))
+
+rprint("Доим животное")
+
+x = Cow('xxx', 8)
+# try:
+# x.milking()
+if hasattr(x,'milking'):
+    print('есть вымя!')
+else:
+    print('нет вымени!')
+
+# except (AttributeError):
+#     print(x.name,'нельзя доить')
+
+for i in range(4):
+    animal = random.choice(list(animals.keys()))
+    print(animal)
+    sex = random.choice(['male', 'female'])
+    print(sex)
+    exec("{}.set_sex('{}')".format(animal, sex))
+    print(animals[animal]['entity'])
+    if hasattr(exec("{}".format(animal)), 'milking'):
+        print('есть вымя')
+    else:
+        print('нет вымени')
+        #  and callable(getattr(Dynamo, key))
+    # exec("{}.milking()".format(animal))
+"""
+
+rprint("Собираем яйца")
+for i in range(4):
+    animal = random.choice(list(animals.keys()))
+    exec("{}.set_sex(None)".format(animal))
+    exec("{}.collect_eggs()".format(animal))
+    exec("{}.set_sex('male')".format(animal))
+    exec("{}.collect_eggs()".format(animal))
+    exec("{}.set_sex('female')".format(animal))
+    exec("{}.collect_eggs()".format(animal))
+    print()
+"""
+
