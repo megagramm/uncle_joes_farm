@@ -266,7 +266,12 @@ rprint("Доим животное")
 x = Cow('xxx', 8)
 # try:
 # x.milking()
-if hasattr(x,'milking'):
+if hasattr(x, 'milking'):
+    print('есть вымя!')
+else:
+    print('нет вымени!')
+y = Chicken('yyy', 8)
+if hasattr(y, 'milking'):
     print('есть вымя!')
 else:
     print('нет вымени!')
@@ -278,7 +283,8 @@ for i in range(4):
     animal = random.choice(list(animals.keys()))
     print(animal)
     sex = random.choice(['male', 'female'])
-    print(sex)
+    sex = 'female'
+    # print(sex)
     exec("{}.set_sex('{}')".format(animal, sex))
     print(animals[animal]['entity'])
     if hasattr(exec("{}".format(animal)), 'milking'):
