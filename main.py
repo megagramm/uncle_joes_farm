@@ -188,51 +188,61 @@ class Duck(Bird):
 
 animals = {
     'grey':
-        {'entity': 'Goose',
+        {'entity': Goose,
             'name': 'Серый',
             'weight': 8},
     'white':
-        {'entity': 'Goose',
+        {'entity': Goose,
             'name': 'Белый',
             'weight': 7.5},
     'mary':
-        {'entity':'Cow',
+        {'entity':Cow,
         'name':'Манька',
         'weight':523},
     'barashek':
-        {'entity':'Sheep',
+        {'entity':Sheep,
          'name':'Барашек',
          'weight':45},
-'kudrjavij':
-        {'entity':'Sheep',
+    'kudrjavij':
+        {'entity':Sheep,
          'name':'Кудрявый',
          'weight':42},
-'koko':
-        {'entity':'Chicken',
+    'koko':
+        {'entity':Chicken,
          'name':'Ко-Ко',
          'weight':2.1},
-'kukareku':
-        {'entity':'Chicken',
+    'kukareku':
+        {'entity':Chicken,
          'name':'Кукареку',
          'weight':1.7},
-'horns':
-        {'entity':'Goat',
+    'horns':
+        {'entity':Goat,
          'name':'Рога',
          'weight':60},
-'hooves':
-        {'entity':'Goat',
+    'hooves':
+        {'entity':Goat,
          'name':'Копыта',
          'weight':63},
-'kryakva':
-        {'entity': 'Duck',
+    'kryakva':
+        {'entity': Duck,
          'name':'Кряква',
          'weight':2.4}
 }
-
+objs = dict()
 for key, value in animals.items():
-    print(f'{key} = {value["entity"]}("{value["name"]}", {value["weight"]})')
-    exec("{} = {}('{}',{})".format(key, value["entity"], value["name"], value["weight"]))
+    # print(f'{key} = {value["entity"]}("{value["name"]}", {value["weight"]})')
+    # exec("{} = {}('{}',{})".format(key, value["entity"], value["name"], value["weight"]))
+    # exec("objs.append({}('{}', {}))".format(value['entity'], value['name'], value['weight']))
+    # exec("objs.update(\{}:{{}('{}', {}\}))".format(key,value['entity'], value['name'], value['weight']))
+    # objs.append(f"{key} = {value['entity']}('{value['name']}', {value['weight']})")
+# objs.append(value['entity'](value['name'], value['weight']))
+    objs.update({key: value['entity'](value['name'], value['weight'])})
 
+print(objs['grey'].name)
+
+print(1)
+print(objs)
+print(2)
 # print("""
 # Ферма запонена животными
 #
@@ -247,11 +257,13 @@ for key, value in animals.items():
 #
 # """)
 rprint("Животное подаёт голос")
-for i in range(4):
+for key in objs.keys():
     animal = random.choice(list(animals.keys()))
     sex = random.choice(['male', 'female'])
-    exec("{}.set_sex('{}')".format(animal, sex))
-    exec("{}.say()".format(animal))
+    objs[key].set_sex(sex)
+    objs[key].say()
+    # exec("{}.set_sex('{}')".format(animal, sex))
+    # exec("{}.say()".format(animal))
 
 rprint("Кормим животное")
 for i in range(4):
