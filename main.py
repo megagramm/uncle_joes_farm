@@ -20,7 +20,7 @@ class Animal:
     __birthday = None
     species_of_animals = None
 
-    def __init__(self, name=None, weight=None):
+    def __init__(self, name: str, weight: float):
         self.name = name
         self.weight = weight
 
@@ -35,6 +35,7 @@ class Animal:
         self.__sex = sex
 
     def input_set_sex(self, intity=None):
+        """Назначение пола через input()"""
         sex = input('Укажите пол (m, male, f, female): ').lower()
         if sex not in ['m', 'male', 'f', 'female']:
             print('Ваши значения не подходят:')
@@ -78,7 +79,7 @@ class Animal:
         else:
             print(f'{self.name} ({self.get_species_of_animals()}): {self.sound}')
 
-    def pet_tha_animal(self):
+    def pet_the_animal(self):
         """Погладь животное"""
         self.say()
         print(f'Вы гладите животное. Все любят ласку. {self.name} радуется')
@@ -106,21 +107,18 @@ class Bird(Animal):
     def collect_eggs(self):
         """Собирать яйца"""
         if self.get_sex() != 'female':
-            print(f'{self.name}: Можно собирать яйца только у самочки')
+            print(f'{self.name} ({self.get_species_of_animals()}): Можно собирать яйца только у самочки')
             return
         eggs = random.randint(0, 3)
         if eggs > 0:
             self.say()
             self.say()
             self.say()
-            print(f'{self.name}({self.species_of_animals[1].lower()}) снесла {eggs} яйца. Вы их забрали, она очень недовольна')
+            print(f'{self.name} ({self.species_of_animals[1].lower()}): снесла {eggs} яйца. Вы их забрали, она очень недовольна')
         else:
             print(f'{self.name}({self.species_of_animals[1]}): Не удалось собрать ни одного яйца. '
                   f'Либо {self.species_of_animals[1].lower()} перестала нестись, либо она их прячет')
 
-    def shearing(self):
-        """Стричь"""
-        print('Нельзя стричь птиц')
 
 class Mammal(Animal):
     """Подкласс живых существ"""
@@ -130,23 +128,10 @@ class Mammal(Animal):
         'teeth': True
     }
 
-    def __init__(self, name, weight):
+    def __init__(self, name: str, weight: float):
         self.attributes.update(self.mammal_attr)
         self.name = name
         self.weight = weight
-
-    def collect_eggs(self):
-        """Собирать яйца"""
-        if self.get_sex() in ['male', 'female']:
-            species_of_animals = self.species_of_animals[0] if self.get_sex() == 'male' else self.species_of_animals[1]
-            print(f'{self.name}({species_of_animals.lower()}) Нельзя собирать яйца у млекопитающих')
-        else:
-            print(f'{self.name} Нельзя собирать яйца у млекопитающих')
-
-    def shearing(self):
-        """Стричь"""
-        """Определить, стригут ли этих животных. Подстричь, уменьшить вес."""
-        ...
 
 
 class Goose(Bird):
@@ -159,16 +144,27 @@ class Cow(Mammal):
     species_of_animals = ['Бык', 'Корова']
 
     def milking(self):
-        """Доить"""
-        if self.get_sex()=='female':
+        if self.get_sex() == 'female':
             print(f'{self.name} ({self.get_species_of_animals()}): {self.get_species_of_animals()} подоена')
             return
-        print(f'{self.name} нельзя подоить')
+        elif self.get_sex() == 'male':
+            print(f'{self.name} ({self.get_species_of_animals()}): нельзя доить')
+            return
+        print(f'{self.name} нельзя доить')
 
 
 class Sheep(Mammal):
     sound = 'Бе-е-е'
     species_of_animals = ['Баран', 'Овца']
+
+    def shearing(self):
+        """Стричь"""
+        if self.get_species_of_animals() is not None:
+            print(f'{self.name} ({self.get_species_of_animals()}): Стрижка произведена')
+            return
+        print(f'{self.name}: Стрижка произведена')
+
+
 
 
 class Chicken(Bird):
@@ -176,7 +172,7 @@ class Chicken(Bird):
     species_of_animals = ['Петух', 'Курица']
 
 
-class Goat(Mammal):
+class Goat(Cow, Mammal):
     sound = 'Ме-е-е'
     species_of_animals = ['Козёл', 'Коза']
 
@@ -230,92 +226,62 @@ animals = {
 }
 objs = dict()
 for key, value in animals.items():
-    # print(f'{key} = {value["entity"]}("{value["name"]}", {value["weight"]})')
-    # exec("{} = {}('{}',{})".format(key, value["entity"], value["name"], value["weight"]))
-    # exec("objs.append({}('{}', {}))".format(value['entity'], value['name'], value['weight']))
-    # exec("objs.update(\{}:{{}('{}', {}\}))".format(key,value['entity'], value['name'], value['weight']))
-    # objs.append(f"{key} = {value['entity']}('{value['name']}', {value['weight']})")
-# objs.append(value['entity'](value['name'], value['weight']))
     objs.update({key: value['entity'](value['name'], value['weight'])})
 
-print(objs['grey'].name)
-
-print(1)
-print(objs)
-print(2)
-# print("""
-# Ферма запонена животными
-#
-# вы можете делать разные действия с животными.
-# Введите команду:
-#  say/говорить
-#  feed/кормить
-#  pet/гладить
-#  collect/собрать яйца
-#  shearing/стричь
-#  milking/доить
-#
-# """)
 rprint("Животное подаёт голос")
 for key in objs.keys():
     animal = random.choice(list(animals.keys()))
     sex = random.choice(['male', 'female'])
     objs[key].set_sex(sex)
     objs[key].say()
-    # exec("{}.set_sex('{}')".format(animal, sex))
-    # exec("{}.say()".format(animal))
 
 rprint("Кормим животное")
-for i in range(4):
-    exec("{}.feed_the_animal()".format(random.choice(list(animals.keys()))))
+for key in objs.keys():
+    objs[key].feed_the_animal()
 
 rprint("Гладим животное")
-for i in range(4):
-    exec("{}.pet_tha_animal()".format(random.choice(list(animals.keys()))))
+for key in objs.keys():
+    objs[key].pet_the_animal()
 
 rprint("Доим животное")
-
-x = Cow('xxx', 8)
-# try:
-# x.milking()
-if hasattr(x, 'milking'):
-    print('есть вымя!')
-else:
-    print('нет вымени!')
-y = Chicken('yyy', 8)
-if hasattr(y, 'milking'):
-    print('есть вымя!')
-else:
-    print('нет вымени!')
-
-# except (AttributeError):
-#     print(x.name,'нельзя доить')
-
-for i in range(4):
-    animal = random.choice(list(animals.keys()))
-    print(animal)
-    sex = random.choice(['male', 'female'])
-    sex = 'female'
-    # print(sex)
-    exec("{}.set_sex('{}')".format(animal, sex))
-    print(animals[animal]['entity'])
-    if hasattr(exec("{}".format(animal)), 'milking'):
-        print('есть вымя')
+for key in objs.keys():
+    if hasattr(objs[key], 'milking'):
+        objs[key].milking()
     else:
-        print('нет вымени')
-        #  and callable(getattr(Dynamo, key))
-    # exec("{}.milking()".format(animal))
-"""
+        print(f'{objs[key].name}({objs[key].get_species_of_animals()}) не дойное животное.')
 
 rprint("Собираем яйца")
-for i in range(4):
-    animal = random.choice(list(animals.keys()))
-    exec("{}.set_sex(None)".format(animal))
-    exec("{}.collect_eggs()".format(animal))
-    exec("{}.set_sex('male')".format(animal))
-    exec("{}.collect_eggs()".format(animal))
-    exec("{}.set_sex('female')".format(animal))
-    exec("{}.collect_eggs()".format(animal))
-    print()
-"""
+for key in objs.keys():
+    if hasattr(objs[key], 'collect_eggs'):
+        objs[key].collect_eggs()
+    else:
+        print(f'{objs[key].name} ({objs[key].get_species_of_animals()}): не откладывает яйца.')
+
+rprint("Стрижом")
+for key in objs.keys():
+    if hasattr(objs[key], 'shearing'):
+        objs[key].shearing()
+    else:
+        print(f'{objs[key].name} ({objs[key].get_species_of_animals()}): не стрижотся.')
+
+rprint("Выясняем самое тяжелое животное")
+# print(max([key,weight from ]))
+# print([value.name for value in objs.values() if value.weight == max(objs.values().weight)])
+
+max_weight = 0
+max_weight_name = None
+m_weight = dict()
+for value in objs.values():
+    m_weight.update({value.name: value.weight})
+    if value.weight > max_weight:
+        max_weight = value.weight
+        max_weight_name = value.name
+
+
+print(f'Самым тяжелым животным является {max_weight_name}. Вес: {max_weight} кг.')
+print(f'Самым тяжелым животным является {max(m_weight, key=m_weight.get)}. Вес: {max(m_weight.values())} кг.')
+print(max({value.name: value.weight for value in objs.values()}, key=m_weight.get))
+
+rprint("Суммарный вес животных фермы")
+print(f'Вес всех животных фермы: {sum([value.weight for value in objs.values()])} кг.')
 
