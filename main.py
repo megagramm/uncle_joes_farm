@@ -1,9 +1,13 @@
 import datetime
 import random
 
+
 def rprint(string):
     """Формирует вывод текста на экран по правому краю"""
-    print(f'\n{"="*20} {string:>80}\n')
+    string_len = len(string)
+    # print(f'\n{"="*(79-string_len-1)}{string:>79}\n')
+    right_len=79-string_len
+    print(f'\n{"="*19} {string:>59}\n')
 
 class Animal:
     """Основной класс наших живых существ"""
@@ -277,10 +281,11 @@ for value in objs.values():
         max_weight = value.weight
         max_weight_name = value.name
 
-
+# m_weight2 = {value.name: value.weight for value in objs.values()}
 print(f'Самым тяжелым животным является {max_weight_name}. Вес: {max_weight} кг.')
-print(f'Самым тяжелым животным является {max(m_weight, key=m_weight.get)}. Вес: {max(m_weight.values())} кг.')
-print(max({value.name: value.weight for value in objs.values()}, key=m_weight.get))
+print(f'Самым тяжелым животным является {max({value.name: value.weight for value in objs.values()}, key=m_weight.get)}.'
+      f' Вес: {max(m_weight.values())} кг.')
+print('Самым тяжелым животным является', max({value.name: value.weight for value in objs.values()}, key=m_weight.get))
 
 rprint("Суммарный вес животных фермы")
 print(f'Вес всех животных фермы: {sum([value.weight for value in objs.values()])} кг.')
