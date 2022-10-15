@@ -4,11 +4,7 @@ import random
 
 def rprint(string):
     """Формирует вывод текста на экран по правому краю"""
-    string_len = len(string)
-    # print(f'\n{"="*(79-string_len-1)}{string:>79}\n')
-    max_line_width = 79
-    eq_symb_len=max_line_width-string_len-1
-    # print(f'\n{"="*19} {string:>59}\n')
+    eq_symb_len = 79-len(string)-1
     print(f'\n{"="*eq_symb_len} {string}\n')
 
 class Animal:
