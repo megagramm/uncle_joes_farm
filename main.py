@@ -6,8 +6,10 @@ def rprint(string):
     """Формирует вывод текста на экран по правому краю"""
     string_len = len(string)
     # print(f'\n{"="*(79-string_len-1)}{string:>79}\n')
-    right_len=79-string_len
-    print(f'\n{"="*19} {string:>59}\n')
+    max_line_width = 79
+    eq_symb_len=max_line_width-string_len-1
+    # print(f'\n{"="*19} {string:>59}\n')
+    print(f'\n{"="*eq_symb_len} {string}\n')
 
 class Animal:
     """Основной класс наших живых существ"""
@@ -120,7 +122,7 @@ class Bird(Animal):
             self.say()
             print(f'{self.name} ({self.species_of_animals[1].lower()}): снесла {eggs} яйца. Вы их забрали, она очень недовольна')
         else:
-            print(f'{self.name}({self.species_of_animals[1]}): Не удалось собрать ни одного яйца. '
+            print(f'{self.name} ({self.species_of_animals[1]}): Не удалось собрать ни одного яйца. '
                   f'Либо {self.species_of_animals[1].lower()} перестала нестись, либо она их прячет')
 
 
