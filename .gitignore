@@ -1,10 +1,5 @@
-/.DS_Store
-/.idea/misc.xml
-/.idea/inspectionProfiles/profiles_settings.xml
-/questtion.txt
-/.idea/uncle joe's farm.iml
-/.idea/vcs.xml
-/venv/
-/venv
+.DS_Store
+.idea/
+questtion.txt
 venv/
 

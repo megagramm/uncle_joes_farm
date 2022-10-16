@@ -183,7 +183,43 @@ class Duck(Bird):
     sound = 'Кря-кря'
     species_of_animals = ['Селезень', 'Утка']
 
+animals2 = [
+        {'entity': 'Goose',
+            'name': 'Серый',
+            'weight': 8},
+        {'entity': 'Goose',
+            'name': 'Белый',
+            'weight': 7.5}
+]
+print(type(animals2))
+print(animals2)
 
+animals2 = (
+        {'entity': 'Goose',
+            'name': 'Серый',
+            'weight': 8},
+        {'entity': 'Goose',
+            'name': 'Белый',
+            'weight': 7.5}
+)
+print(type(animals2))
+print(animals2)
+
+animals2 = {
+    'grey':
+        {'entity': 'Goose',
+            'name': 'Серый',
+            'weight': 8},
+    'white':
+        {'entity': 'Goose',
+            'name': 'Белый',
+            'weight': 7.5}
+}
+objs2 = dict()
+for key, value in animals2.items():
+    objs2.update({key: globals()[value['entity']](value['name'], value['weight'])})
+print(objs2)
+# globals()[classname_string]()
 animals = {
     'grey':
         {'entity': Goose,
